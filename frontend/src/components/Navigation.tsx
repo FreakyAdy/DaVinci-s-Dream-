@@ -20,7 +20,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     { id: 'discover', label: 'Discover', icon: BookOpen, desc: 'Workshop Vision' },
     { id: 'archive', label: 'Invention Archive', icon: Layers, desc: 'Historical Codices' },
     { id: 'sketch', label: 'Sketch Explorer', icon: Feather, desc: 'Drawing Intake & Diagnostics' },
-    { id: 'lab', label: 'Flight Laboratory', icon: Wind, desc: '3D Simulation & RL' },
+    { id: 'lab', label: '3D Flight Lab', icon: Wind, desc: '3D WebGL Simulation & RL', is3D: true },
   ] as const;
 
   return (
@@ -63,6 +63,11 @@ export const Navigation: React.FC<NavigationProps> = ({
                 >
                   <Icon size={16} className={isActive ? 'text-[#9A7447]' : 'text-[#5E5D57]'} />
                   <span>{item.label}</span>
+                  {'is3D' in item && item.is3D && (
+                    <span className="px-1.5 py-0.2 rounded text-[10px] font-mono font-bold bg-[#9A7447]/20 text-[#785630] border border-[#9A7447]/40 tracking-wider">
+                      3D
+                    </span>
+                  )}
                 </button>
               );
             })}
