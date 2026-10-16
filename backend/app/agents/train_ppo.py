@@ -78,6 +78,7 @@ def train_ornithopter_ppo(
     log_path: str = DEFAULT_LOG_PATH,
     learning_rate: float = 3e-4,
     seed: int = 42,
+    device: str = "cpu",
     progress_hook: Optional[Callable[[dict], None]] = None
 ) -> PPO:
     """Train PPO policy and save model checkpoint."""
@@ -88,7 +89,6 @@ def train_ornithopter_ppo(
     torch.manual_seed(seed)
     np.random.seed(seed)
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"[TrainPPO] Starting training on device: {device} | Target timesteps: {timesteps}")
 
     env = OrnithopterEnv()

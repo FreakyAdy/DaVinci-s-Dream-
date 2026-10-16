@@ -1,249 +1,417 @@
 {
   "status": "completed",
   "save_path": "models/ornithopter_ppo.zip",
-  "completed_at": "2026-10-16T06:14:01Z",
-  "total_timesteps": 30000,
-  "final_mean_reward": 2625.8130806,
+  "completed_at": "2026-10-16T06:40:03Z",
+  "total_timesteps": 50000,
+  "final_mean_reward": 2913.1613248500003,
   "history": [
     {
       "timesteps": 1000,
-      "total_timesteps": 30000,
-      "progress": 0.0333,
-      "elapsed_seconds": 3.47,
-      "fps": 288,
-      "mean_reward": 385.17
+      "total_timesteps": 50000,
+      "progress": 0.02,
+      "elapsed_seconds": 1.11,
+      "fps": 896,
+      "mean_reward": 655.7
     },
     {
       "timesteps": 2000,
-      "total_timesteps": 30000,
-      "progress": 0.0667,
-      "elapsed_seconds": 6.32,
-      "fps": 316,
-      "mean_reward": -1959.89
+      "total_timesteps": 50000,
+      "progress": 0.04,
+      "elapsed_seconds": 2.19,
+      "fps": 913,
+      "mean_reward": -1181.43
     },
     {
       "timesteps": 3000,
-      "total_timesteps": 30000,
-      "progress": 0.1,
-      "elapsed_seconds": 13.72,
-      "fps": 218,
-      "mean_reward": -1091.78
+      "total_timesteps": 50000,
+      "progress": 0.06,
+      "elapsed_seconds": 5.65,
+      "fps": 530,
+      "mean_reward": -1181.43
     },
     {
       "timesteps": 4000,
-      "total_timesteps": 30000,
-      "progress": 0.1333,
-      "elapsed_seconds": 16.69,
-      "fps": 239,
-      "mean_reward": -841.91
+      "total_timesteps": 50000,
+      "progress": 0.08,
+      "elapsed_seconds": 6.64,
+      "fps": 602,
+      "mean_reward": -485.75
     },
     {
       "timesteps": 5000,
-      "total_timesteps": 30000,
-      "progress": 0.1667,
-      "elapsed_seconds": 23.58,
-      "fps": 212,
-      "mean_reward": -583.81
+      "total_timesteps": 50000,
+      "progress": 0.1,
+      "elapsed_seconds": 9.77,
+      "fps": 511,
+      "mean_reward": -321.33
     },
     {
       "timesteps": 6000,
-      "total_timesteps": 30000,
-      "progress": 0.2,
-      "elapsed_seconds": 27.12,
-      "fps": 221,
-      "mean_reward": -448.89
+      "total_timesteps": 50000,
+      "progress": 0.12,
+      "elapsed_seconds": 10.8,
+      "fps": 555,
+      "mean_reward": -321.33
     },
     {
       "timesteps": 7000,
-      "total_timesteps": 30000,
-      "progress": 0.2333,
-      "elapsed_seconds": 34.27,
-      "fps": 204,
-      "mean_reward": -448.89
+      "total_timesteps": 50000,
+      "progress": 0.14,
+      "elapsed_seconds": 14.07,
+      "fps": 497,
+      "mean_reward": -67.18
     },
     {
       "timesteps": 8000,
-      "total_timesteps": 30000,
-      "progress": 0.2667,
-      "elapsed_seconds": 36.9,
-      "fps": 216,
-      "mean_reward": -656.27
+      "total_timesteps": 50000,
+      "progress": 0.16,
+      "elapsed_seconds": 15.12,
+      "fps": 528,
+      "mean_reward": -67.18
     },
     {
       "timesteps": 9000,
-      "total_timesteps": 30000,
-      "progress": 0.3,
-      "elapsed_seconds": 40.75,
-      "fps": 220,
-      "mean_reward": -569.96
+      "total_timesteps": 50000,
+      "progress": 0.18,
+      "elapsed_seconds": 18.4,
+      "fps": 489,
+      "mean_reward": 95.27
     },
     {
       "timesteps": 10000,
-      "total_timesteps": 30000,
-      "progress": 0.3333,
-      "elapsed_seconds": 42.17,
-      "fps": 237,
-      "mean_reward": -407.03
+      "total_timesteps": 50000,
+      "progress": 0.2,
+      "elapsed_seconds": 19.43,
+      "fps": 514,
+      "mean_reward": 312.36
     },
     {
       "timesteps": 11000,
-      "total_timesteps": 30000,
-      "progress": 0.3667,
-      "elapsed_seconds": 45.97,
-      "fps": 239,
-      "mean_reward": -388.15
+      "total_timesteps": 50000,
+      "progress": 0.22,
+      "elapsed_seconds": 22.51,
+      "fps": 488,
+      "mean_reward": 446.9
     },
     {
       "timesteps": 12000,
-      "total_timesteps": 30000,
-      "progress": 0.4,
-      "elapsed_seconds": 47.43,
-      "fps": 252,
-      "mean_reward": -264.17
+      "total_timesteps": 50000,
+      "progress": 0.24,
+      "elapsed_seconds": 23.49,
+      "fps": 510,
+      "mean_reward": 446.9
     },
     {
       "timesteps": 13000,
-      "total_timesteps": 30000,
-      "progress": 0.4333,
-      "elapsed_seconds": 57.11,
-      "fps": 227,
-      "mean_reward": -192.38
+      "total_timesteps": 50000,
+      "progress": 0.26,
+      "elapsed_seconds": 26.72,
+      "fps": 486,
+      "mean_reward": 589.95
     },
     {
       "timesteps": 14000,
-      "total_timesteps": 30000,
-      "progress": 0.4667,
-      "elapsed_seconds": 58.51,
-      "fps": 239,
-      "mean_reward": -92.76
+      "total_timesteps": 50000,
+      "progress": 0.28,
+      "elapsed_seconds": 27.73,
+      "fps": 504,
+      "mean_reward": 764.42
     },
     {
       "timesteps": 15000,
-      "total_timesteps": 30000,
-      "progress": 0.5,
-      "elapsed_seconds": 62.12,
-      "fps": 241,
-      "mean_reward": 58.32
+      "total_timesteps": 50000,
+      "progress": 0.3,
+      "elapsed_seconds": 30.8,
+      "fps": 487,
+      "mean_reward": 764.42
     },
     {
       "timesteps": 16000,
-      "total_timesteps": 30000,
-      "progress": 0.5333,
-      "elapsed_seconds": 63.4,
-      "fps": 252,
-      "mean_reward": 199.31
+      "total_timesteps": 50000,
+      "progress": 0.32,
+      "elapsed_seconds": 31.95,
+      "fps": 500,
+      "mean_reward": 893.37
     },
     {
       "timesteps": 17000,
-      "total_timesteps": 30000,
-      "progress": 0.5667,
-      "elapsed_seconds": 69.8,
-      "fps": 243,
-      "mean_reward": 325.66
+      "total_timesteps": 50000,
+      "progress": 0.34,
+      "elapsed_seconds": 35.38,
+      "fps": 480,
+      "mean_reward": 1007.66
     },
     {
       "timesteps": 18000,
-      "total_timesteps": 30000,
-      "progress": 0.6,
-      "elapsed_seconds": 72.71,
-      "fps": 247,
-      "mean_reward": 682.08
+      "total_timesteps": 50000,
+      "progress": 0.36,
+      "elapsed_seconds": 36.37,
+      "fps": 494,
+      "mean_reward": 1110.13
     },
     {
       "timesteps": 19000,
-      "total_timesteps": 30000,
-      "progress": 0.6333,
-      "elapsed_seconds": 79.4,
-      "fps": 239,
-      "mean_reward": 760.14
+      "total_timesteps": 50000,
+      "progress": 0.38,
+      "elapsed_seconds": 39.97,
+      "fps": 475,
+      "mean_reward": 1202.49
     },
     {
       "timesteps": 20000,
-      "total_timesteps": 30000,
-      "progress": 0.6667,
-      "elapsed_seconds": 82.4,
-      "fps": 242,
-      "mean_reward": 930.73
+      "total_timesteps": 50000,
+      "progress": 0.4,
+      "elapsed_seconds": 40.98,
+      "fps": 488,
+      "mean_reward": 1639.99
     },
     {
       "timesteps": 21000,
-      "total_timesteps": 30000,
-      "progress": 0.7,
-      "elapsed_seconds": 89.78,
-      "fps": 233,
-      "mean_reward": 1125.35
+      "total_timesteps": 50000,
+      "progress": 0.42,
+      "elapsed_seconds": 44.24,
+      "fps": 474,
+      "mean_reward": 1763.32
     },
     {
       "timesteps": 22000,
-      "total_timesteps": 30000,
-      "progress": 0.7333,
-      "elapsed_seconds": 93.39,
-      "fps": 235,
-      "mean_reward": 1256.21
+      "total_timesteps": 50000,
+      "progress": 0.44,
+      "elapsed_seconds": 45.33,
+      "fps": 485,
+      "mean_reward": 1884.96
     },
     {
       "timesteps": 23000,
-      "total_timesteps": 30000,
-      "progress": 0.7667,
-      "elapsed_seconds": 100.69,
-      "fps": 228,
-      "mean_reward": 1498.47
+      "total_timesteps": 50000,
+      "progress": 0.46,
+      "elapsed_seconds": 48.9,
+      "fps": 470,
+      "mean_reward": 2001.36
     },
     {
       "timesteps": 24000,
-      "total_timesteps": 30000,
-      "progress": 0.8,
-      "elapsed_seconds": 104.21,
-      "fps": 230,
-      "mean_reward": 1650.55
+      "total_timesteps": 50000,
+      "progress": 0.48,
+      "elapsed_seconds": 50.0,
+      "fps": 479,
+      "mean_reward": 2130.29
     },
     {
       "timesteps": 25000,
-      "total_timesteps": 30000,
-      "progress": 0.8333,
-      "elapsed_seconds": 111.29,
-      "fps": 224,
-      "mean_reward": 1782.82
+      "total_timesteps": 50000,
+      "progress": 0.5,
+      "elapsed_seconds": 53.02,
+      "fps": 471,
+      "mean_reward": 2283.77
     },
     {
       "timesteps": 26000,
-      "total_timesteps": 30000,
-      "progress": 0.8667,
-      "elapsed_seconds": 114.47,
-      "fps": 227,
-      "mean_reward": 1874.63
+      "total_timesteps": 50000,
+      "progress": 0.52,
+      "elapsed_seconds": 54.0,
+      "fps": 481,
+      "mean_reward": 2410.45
     },
     {
       "timesteps": 27000,
-      "total_timesteps": 30000,
-      "progress": 0.9,
-      "elapsed_seconds": 121.56,
-      "fps": 222,
-      "mean_reward": 2221.67
+      "total_timesteps": 50000,
+      "progress": 0.54,
+      "elapsed_seconds": 57.01,
+      "fps": 473,
+      "mean_reward": 2495.43
     },
     {
       "timesteps": 28000,
-      "total_timesteps": 30000,
-      "progress": 0.9333,
-      "elapsed_seconds": 124.75,
-      "fps": 224,
-      "mean_reward": 2402.36
+      "total_timesteps": 50000,
+      "progress": 0.56,
+      "elapsed_seconds": 57.96,
+      "fps": 483,
+      "mean_reward": 2564.96
     },
     {
       "timesteps": 29000,
-      "total_timesteps": 30000,
-      "progress": 0.9667,
-      "elapsed_seconds": 131.27,
-      "fps": 220,
-      "mean_reward": 2556.92
+      "total_timesteps": 50000,
+      "progress": 0.58,
+      "elapsed_seconds": 60.9,
+      "fps": 476,
+      "mean_reward": 2593.74
     },
     {
       "timesteps": 30000,
-      "total_timesteps": 30000,
+      "total_timesteps": 50000,
+      "progress": 0.6,
+      "elapsed_seconds": 61.99,
+      "fps": 483,
+      "mean_reward": 2713.18
+    },
+    {
+      "timesteps": 31000,
+      "total_timesteps": 50000,
+      "progress": 0.62,
+      "elapsed_seconds": 65.1,
+      "fps": 476,
+      "mean_reward": 2783.52
+    },
+    {
+      "timesteps": 32000,
+      "total_timesteps": 50000,
+      "progress": 0.64,
+      "elapsed_seconds": 66.16,
+      "fps": 483,
+      "mean_reward": 2783.49
+    },
+    {
+      "timesteps": 33000,
+      "total_timesteps": 50000,
+      "progress": 0.66,
+      "elapsed_seconds": 69.26,
+      "fps": 476,
+      "mean_reward": 2783.49
+    },
+    {
+      "timesteps": 34000,
+      "total_timesteps": 50000,
+      "progress": 0.68,
+      "elapsed_seconds": 70.3,
+      "fps": 483,
+      "mean_reward": 2842.8
+    },
+    {
+      "timesteps": 35000,
+      "total_timesteps": 50000,
+      "progress": 0.7,
+      "elapsed_seconds": 73.29,
+      "fps": 477,
+      "mean_reward": 2837.69
+    },
+    {
+      "timesteps": 36000,
+      "total_timesteps": 50000,
+      "progress": 0.72,
+      "elapsed_seconds": 74.32,
+      "fps": 484,
+      "mean_reward": 2830.37
+    },
+    {
+      "timesteps": 37000,
+      "total_timesteps": 50000,
+      "progress": 0.74,
+      "elapsed_seconds": 77.33,
+      "fps": 478,
+      "mean_reward": 2831.04
+    },
+    {
+      "timesteps": 38000,
+      "total_timesteps": 50000,
+      "progress": 0.76,
+      "elapsed_seconds": 78.3,
+      "fps": 485,
+      "mean_reward": 2830.95
+    },
+    {
+      "timesteps": 39000,
+      "total_timesteps": 50000,
+      "progress": 0.78,
+      "elapsed_seconds": 81.43,
+      "fps": 478,
+      "mean_reward": 2831.48
+    },
+    {
+      "timesteps": 40000,
+      "total_timesteps": 50000,
+      "progress": 0.8,
+      "elapsed_seconds": 82.39,
+      "fps": 485,
+      "mean_reward": 2890.95
+    },
+    {
+      "timesteps": 41000,
+      "total_timesteps": 50000,
+      "progress": 0.82,
+      "elapsed_seconds": 84.97,
+      "fps": 482,
+      "mean_reward": 2891.76
+    },
+    {
+      "timesteps": 42000,
+      "total_timesteps": 50000,
+      "progress": 0.84,
+      "elapsed_seconds": 85.45,
+      "fps": 491,
+      "mean_reward": 2893.41
+    },
+    {
+      "timesteps": 43000,
+      "total_timesteps": 50000,
+      "progress": 0.86,
+      "elapsed_seconds": 85.92,
+      "fps": 500,
+      "mean_reward": 2896.51
+    },
+    {
+      "timesteps": 44000,
+      "total_timesteps": 50000,
+      "progress": 0.88,
+      "elapsed_seconds": 87.51,
+      "fps": 502,
+      "mean_reward": 2898.28
+    },
+    {
+      "timesteps": 45000,
+      "total_timesteps": 50000,
+      "progress": 0.9,
+      "elapsed_seconds": 88.06,
+      "fps": 511,
+      "mean_reward": 2900.64
+    },
+    {
+      "timesteps": 46000,
+      "total_timesteps": 50000,
+      "progress": 0.92,
+      "elapsed_seconds": 89.52,
+      "fps": 513,
+      "mean_reward": 2901.63
+    },
+    {
+      "timesteps": 47000,
+      "total_timesteps": 50000,
+      "progress": 0.94,
+      "elapsed_seconds": 90.02,
+      "fps": 522,
+      "mean_reward": 2902.45
+    },
+    {
+      "timesteps": 48000,
+      "total_timesteps": 50000,
+      "progress": 0.96,
+      "elapsed_seconds": 91.51,
+      "fps": 524,
+      "mean_reward": 2902.97
+    },
+    {
+      "timesteps": 49000,
+      "total_timesteps": 50000,
+      "progress": 0.98,
+      "elapsed_seconds": 91.99,
+      "fps": 532,
+      "mean_reward": 2911.87
+    },
+    {
+      "timesteps": 50000,
+      "total_timesteps": 50000,
       "progress": 1.0,
-      "elapsed_seconds": 134.38,
-      "fps": 223,
-      "mean_reward": 2625.81
+      "elapsed_seconds": 93.47,
+      "fps": 534,
+      "mean_reward": 2912.96
+    },
+    {
+      "timesteps": 51000,
+      "total_timesteps": 50000,
+      "progress": 1.0,
+      "elapsed_seconds": 93.99,
+      "fps": 542,
+      "mean_reward": 2913.16
     }
   ]
 }

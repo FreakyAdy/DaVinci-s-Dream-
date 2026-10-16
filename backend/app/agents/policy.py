@@ -24,7 +24,7 @@ class RLPolicyWrapper:
         """Attempt to load or reload policy checkpoint."""
         if os.path.exists(self.model_path):
             try:
-                self.model = PPO.load(self.model_path)
+                self.model = PPO.load(self.model_path, device="cpu")
                 return True
             except Exception as e:
                 print(f"[RLPolicyWrapper] Error loading policy from {self.model_path}: {e}")
