@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { TrajectoryPoint } from '../types';
-import { Maximize2, Compass, Eye, RotateCcw, Box } from 'lucide-react';
+import type { TrajectoryPoint } from '../types';
+import { Eye, RotateCcw, Box } from 'lucide-react';
 
 interface Ornithopter3DProps {
   x: number;

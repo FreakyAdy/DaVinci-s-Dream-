@@ -1,4 +1,4 @@
-import {
+import type {
   Machine,
   SimulationStepResponse,
   RunSimulationResponse,
@@ -14,7 +14,7 @@ export async function checkBackendHealth(): Promise<{ status: string; cuda_avail
     const res = await fetch(`${API_BASE_URL}/api/health`);
     if (!res.ok) throw new Error(`HTTP error ${res.status}`);
     return await res.json();
-  } catch (err) {
+  } catch {
     return {
       status: 'offline',
       cuda_available: false,
@@ -201,7 +201,7 @@ export async function fetchArtifacts(): Promise<UserArtifact[]> {
     const res = await fetch(`${API_BASE_URL}/api/artifacts`);
     if (!res.ok) throw new Error(`Artifact fetch error: ${res.statusText}`);
     return await res.json();
-  } catch (err) {
+  } catch {
     return [];
   }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Machine } from '../types';
-import { Layers, CheckCircle2, XCircle, ArrowUpRight, X, ExternalLink, Compass } from 'lucide-react';
+import type { Machine } from '../types';
+import { CheckCircle2, XCircle, ArrowUpRight, X, Compass } from 'lucide-react';
 
 interface ArchivePageProps {
   machines: Machine[];

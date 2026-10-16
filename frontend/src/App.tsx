@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigation } from './components/Navigation';
 import { DiscoverPage } from './pages/DiscoverPage';
 import { ArchivePage } from './pages/ArchivePage';
 import { SketchExplorerPage } from './pages/SketchExplorerPage';
 import { FlightLabPage } from './pages/FlightLabPage';
 import { checkBackendHealth, fetchMachines } from './services/api';
-import { Machine } from './types';
+import type { Machine } from './types';
 import './styles/renaissance.css';
 
 export function App() {
@@ -42,7 +42,7 @@ export function App() {
     }
   };
 
-  const handleSelectMachineForLab = (machineId: string) => {
+  const handleSelectMachineForLab = () => {
     setActiveTab('lab');
   };
 
