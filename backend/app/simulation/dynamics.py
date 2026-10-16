@@ -114,15 +114,19 @@ class FlightDynamicsEngine:
         drag_aero = q_dyn * c_d
 
         # Flapping kinematics & dynamic forces
+        # Wing stroke: beta = amp * cos(phi) -> top of stroke at phi=0
+        # Wing velocity: beta_dot = -amp * omega * sin(phi) -> negative during downstroke (phi in (0, pi))
         omega = 2.0 * math.pi * freq
-        wing_stroke = amp * math.sin(self.state.phi)
-        wing_ang_vel = amp * omega * math.cos(self.state.phi)
+        wing_stroke = amp * math.cos(self.state.phi)
+        wing_ang_vel = -amp * omega * math.sin(self.state.phi)
 
-        # Downstroke generates positive dynamic lift and forward propulsive thrust
-        # Downstroke is when wing moves downward (wing_ang_vel < 0 in standard frame)
-        downstroke_intensity = max(0.0, -wing_ang_vel)
-        lift_flap = 0.5 * cfg.air_density * cfg.wing_area * cfg.cl_flap * abs(wing_ang_vel) * downstroke_intensity * (cfg.wingspan * 0.25)
-        thrust_flap = cfg.propulsive_eff * lift_flap * math.cos(self.state.theta)
+        # Downstroke occurs when wing moves downward (wing_ang_vel < 0)
+        # Downstroke produces strong upward lift and forward propulsive thrust
+        downstroke_vel = max(0.0, -wing_ang_vel)
+        # Quasi-steady dynamic lift from moving wing
+        lift_flap = 0.5 * cfg.air_density * cfg.wing_area * cfg.cl_flap * (downstroke_vel ** 2) * (cfg.wingspan * 0.15)
+        # Forward thrust from pitch-angled downstroke and spanwise aeroelastic twist
+        thrust_flap = cfg.propulsive_eff * lift_flap * max(0.1, math.cos(self.state.theta)) + 0.1 * cfg.air_density * cfg.wing_area * (downstroke_vel ** 2)
 
         # Force resolution in inertial frame
         # L acts perpendicular to relative wind, D acts parallel opposite
