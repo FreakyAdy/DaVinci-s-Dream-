@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Ornithopter3D } from '../components/Ornithopter3D';
-import {
+import type {
   AircraftState,
   FlightTelemetry,
   TrajectoryPoint,
@@ -19,7 +19,6 @@ import {
 } from '../services/api';
 import {
   Play,
-  Pause,
   RotateCcw,
   FastForward,
   Cpu,
@@ -28,11 +27,7 @@ import {
   Gauge,
   Sliders,
   AlertTriangle,
-  CheckCircle2,
-  XCircle,
-  Activity,
-  Flame,
-  Award
+  Activity
 } from 'lucide-react';
 
 interface FlightLabPageProps {
@@ -40,7 +35,7 @@ interface FlightLabPageProps {
   policyLoaded: boolean;
 }
 
-export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy, policyLoaded }) => {
+export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: _isBackendHealthy, policyLoaded: _policyLoaded }) => {
   // Flight controller mode
   const [controllerMode, setControllerMode] = useState<'manual' | 'baseline' | 'rl'>('baseline');
 

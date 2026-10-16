@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { UserArtifact, AnnotationItem } from '../types';
+import type { UserArtifact, AnnotationItem } from '../types';
 import { uploadSketch, fetchArtifacts } from '../services/api';
-import { Upload, Feather, CheckCircle2, AlertTriangle, Info, Plus, X, Tag } from 'lucide-react';
+import { Upload, Feather, CheckCircle2, AlertTriangle, Info, X, Tag } from 'lucide-react';
 
 interface SketchExplorerPageProps {
   onGoToFlightLab: () => void;
