@@ -17,6 +17,7 @@ import {
   runEvaluation,
   fetchLatestEvaluation
 } from '../services/api';
+import { soundFx } from '../services/sound';
 import {
   Play,
   RotateCcw,
@@ -27,7 +28,8 @@ import {
   Gauge,
   Sliders,
   AlertTriangle,
-  Activity
+  Activity,
+  Layers
 } from 'lucide-react';
 
 interface FlightLabPageProps {
@@ -68,6 +70,9 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
   });
 
   const [trajectory, setTrajectory] = useState<TrajectoryPoint[]>([]);
+  const [comparisonTrajectory, setComparisonTrajectory] = useState<TrajectoryPoint[]>([]);
+  const [showComparisonOverlay, setShowComparisonOverlay] = useState<boolean>(false);
+
   const [events, setEvents] = useState<FlightEvent[]>([
     { timestamp: 0, status: 'on_platform', message: 'Aircraft positioned on elevated cliff platform (height 25m).', altitude: 25, x: 0 }
   ]);
@@ -86,6 +91,9 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Modern Trajectory Scrubber Index
+  const [scrubberIndex, setScrubberIndex] = useState<number>(0);
+
   // Training Modal & State
   const [isTrainingModalOpen, setIsTrainingModalOpen] = useState<boolean>(false);
   const [trainingStatus, setTrainingStatus] = useState<TrainingStatus | null>(null);
@@ -100,25 +108,42 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
   // Canvas ref for 2D trajectory profile
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Animation playback reference for recorded trajectories
-  const playbackIndexRef = useRef<number>(0);
+  // Playback refs
   const playbackTrajectoryRef = useRef<TrajectoryPoint[]>([]);
+  const playbackIntervalRef = useRef<any>(null);
 
   useEffect(() => {
     handleReset();
     fetchBenchmarkSummary();
+    return () => {
+      if (playbackIntervalRef.current) clearInterval(playbackIntervalRef.current);
+    };
   }, []);
 
   const fetchBenchmarkSummary = async () => {
     try {
       const data = await fetchLatestEvaluation();
       setBenchmarkData(data);
+
+      // Pre-populate comparison baseline trajectory if available
+      if (data?.baseline?.episodes?.[0]?.trajectory) {
+        const compPts = data.baseline.episodes[0].trajectory.map((p, idx) => ({
+          x: p.x,
+          y: p.y,
+          u: 7.0,
+          v: -1.0,
+          theta: 0.05,
+          wing_stroke: 0,
+          airspeed: p.airspeed,
+          time: idx * 0.2
+        }));
+        setComparisonTrajectory(compPts);
+      }
     } catch (e) {
       console.warn('Could not load latest benchmark:', e);
     }
   };
 
-  // Poll training status when training modal is open
   useEffect(() => {
     if (!isTrainingModalOpen) return;
     const interval = setInterval(async () => {
@@ -132,7 +157,7 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
     return () => clearInterval(interval);
   }, [isTrainingModalOpen]);
 
-  // Draw 2D trajectory canvas
+  // 2D Trajectory Canvas
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -142,20 +167,16 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
     const w = canvas.width;
     const h = canvas.height;
 
-    // Clear with parchment grid background
     ctx.fillStyle = '#FAF6EF';
     ctx.fillRect(0, 0, w, h);
 
-    // Coordinate mapping:
-    // x in [0, 240] m -> pixel x in [40, w - 20]
-    // y in [0, 40] m -> pixel y in [h - 30, 20]
-    const mapX = (xVal: number) => 40 + (xVal / 240) * (w - 60);
+    const mapX = (xVal: number) => 40 + (xVal / 360) * (w - 60);
     const mapY = (yVal: number) => (h - 30) - (yVal / 40) * (h - 50);
 
     // Draw Grid Lines
     ctx.strokeStyle = 'rgba(154, 116, 71, 0.15)';
     ctx.lineWidth = 1;
-    for (let gx = 0; gx <= 240; gx += 40) {
+    for (let gx = 0; gx <= 360; gx += 60) {
       ctx.beginPath();
       ctx.moveTo(mapX(gx), 20);
       ctx.lineTo(mapX(gx), h - 30);
@@ -177,12 +198,12 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
       ctx.fillText(`${gy}m`, 10, mapY(gy) + 3);
     }
 
-    // Draw Elevated Cliff Platform (x: 0 to 15m, y: 25m)
+    // Draw Elevated Cliff Platform
     ctx.fillStyle = '#E2D5BA';
     ctx.strokeStyle = '#9A7447';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.rect(mapX(0), mapY(25), mapX(15) - mapX(0), mapY(0) - mapY(25));
+    ctx.rect(mapX(0), mapY(25), mapX(16) - mapX(0), mapY(0) - mapY(25));
     ctx.fill();
     ctx.stroke();
 
@@ -190,12 +211,12 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
     ctx.font = 'bold 9px serif';
     ctx.fillText('Cliff (25m)', mapX(2), mapY(26.5));
 
-    // Draw Valley Ground (x >= 15, y = 0)
+    // Draw Valley Ground
     ctx.strokeStyle = '#4A483E';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(mapX(15), mapY(0));
-    ctx.lineTo(mapX(240), mapY(0));
+    ctx.moveTo(mapX(16), mapY(0));
+    ctx.lineTo(mapX(360), mapY(0));
     ctx.stroke();
 
     // Draw Target Landing Field (x = 180 to 220)
@@ -211,10 +232,25 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
     ctx.font = 'bold 9px monospace';
     ctx.fillText('TARGET ZONE (200m)', mapX(182), mapY(3.5));
 
-    // Draw Flight Trajectory Curve
-    if (trajectory.length > 1) {
+    // Draw Comparison Baseline Trajectory (if toggled)
+    if (showComparisonOverlay && comparisonTrajectory.length > 1) {
+      ctx.save();
       ctx.strokeStyle = '#A94330';
-      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(mapX(comparisonTrajectory[0].x), mapY(comparisonTrajectory[0].y));
+      for (let i = 1; i < comparisonTrajectory.length; i++) {
+        ctx.lineTo(mapX(comparisonTrajectory[i].x), mapY(comparisonTrajectory[i].y));
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Draw Active Flight Trajectory Curve
+    if (trajectory.length > 1) {
+      ctx.strokeStyle = controllerMode === 'rl' ? '#2D584A' : '#A94330';
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.moveTo(mapX(trajectory[0].x), mapY(trajectory[0].y));
       for (let i = 1; i < trajectory.length; i++) {
@@ -223,23 +259,27 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
       ctx.stroke();
     }
 
-    // Draw Current Aircraft Position Dot
+    // Draw Current Position Dot
     ctx.fillStyle = '#D4AF37';
     ctx.strokeStyle = '#171714';
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(mapX(state.x), mapY(state.y), 4.5, 0, Math.PI * 2);
+    ctx.arc(mapX(state.x), mapY(state.y), 5, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
-  }, [state.x, state.y, trajectory]);
+  }, [state.x, state.y, trajectory, comparisonTrajectory, showComparisonOverlay, controllerMode]);
 
   const handleReset = async () => {
+    if (playbackIntervalRef.current) clearInterval(playbackIntervalRef.current);
     setIsRunning(false);
     setErrorMessage(null);
+    soundFx.playRatchetClick();
+
     try {
       const res = await resetSimulation({ wind_x: windX, wind_y: windY });
       setState(res.state);
       setTelemetry(res.telemetry);
+      setScrubberIndex(0);
       setTrajectory([{
         x: res.state.x,
         y: res.state.y,
@@ -288,6 +328,9 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
 
       if (res.is_terminal) {
         setIsRunning(false);
+        if (res.state.status.includes('landed')) {
+          soundFx.playLandingFanfare();
+        }
       }
     } catch (err: any) {
       setErrorMessage(err.message || 'Error stepping simulation.');
@@ -295,9 +338,11 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
   };
 
   const handleLaunchFullFlight = async () => {
+    if (playbackIntervalRef.current) clearInterval(playbackIntervalRef.current);
     setIsLoading(true);
     setErrorMessage(null);
     setIsRunning(false);
+    soundFx.playRatchetClick();
 
     try {
       const res = await runSimulation({
@@ -310,9 +355,7 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
         max_steps: 1200
       });
 
-      // Prepare trajectory for playback
       playbackTrajectoryRef.current = res.trajectory;
-      playbackIndexRef.current = 0;
       setEvents(res.events);
 
       // Start animated playback
@@ -330,14 +373,19 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
     if (!pts || pts.length === 0) return;
 
     let idx = 0;
-    const interval = setInterval(() => {
+    playbackIntervalRef.current = setInterval(() => {
       if (idx >= pts.length) {
-        clearInterval(interval);
+        clearInterval(playbackIntervalRef.current);
         setIsRunning(false);
+        const finalStatus = pts[pts.length - 1];
+        if (finalStatus.x >= 180 && finalStatus.y <= 1.0) {
+          soundFx.playLandingFanfare();
+        }
         return;
       }
 
       const p = pts[idx];
+      setScrubberIndex(idx);
       setState((prev) => ({
         ...prev,
         x: p.x,
@@ -357,11 +405,41 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
 
       setTrajectory(pts.slice(0, idx + 1));
       idx += 1;
-    }, 35); // ~30 fps smooth replay
+    }, 32); // ~30 fps
+  };
+
+  const handleScrubberChange = (idx: number) => {
+    if (playbackIntervalRef.current) clearInterval(playbackIntervalRef.current);
+    setIsRunning(false);
+
+    const pts = playbackTrajectoryRef.current;
+    if (!pts || pts.length === 0 || idx >= pts.length) return;
+
+    setScrubberIndex(idx);
+    const p = pts[idx];
+    setState((prev) => ({
+      ...prev,
+      x: p.x,
+      y: p.y,
+      u: p.u,
+      v: p.v,
+      theta: p.theta,
+      time: p.time
+    }));
+
+    setTelemetry((prev) => ({
+      ...prev,
+      airspeed: p.airspeed,
+      groundspeed: Math.hypot(p.u, p.v),
+      wing_stroke_angle: p.wing_stroke
+    }));
+
+    setTrajectory(pts.slice(0, idx + 1));
   };
 
   const handleTriggerTraining = async () => {
     setIsStartingTraining(true);
+    soundFx.playRatchetClick();
     try {
       await startTraining(trainingTimesteps);
       const st = await fetchTrainingStatus();
@@ -375,6 +453,7 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
 
   const handleRunEvaluationBenchmark = async () => {
     setIsEvaluating(true);
+    soundFx.playRatchetClick();
     try {
       const data = await runEvaluation(10);
       setBenchmarkData(data);
@@ -392,7 +471,7 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
       <div className="parchment-card p-4 sm:p-5 corner-ticks flex flex-col md:flex-row md:items-center justify-between gap-4 border border-[#9A7447]/40 shadow-sm">
         <div>
           <span className="font-serif text-xs font-bold uppercase tracking-widest text-[#9A7447] block">
-            Laboratorio di Volo • Galleria del Vento
+            Laboratorio di Volo • Galleria del Vento (c. 1505)
           </span>
           <h1 className="font-serif text-2xl sm:text-3xl font-extrabold text-[#171714]">
             Ornithopter Flight Laboratory
@@ -402,7 +481,10 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
         {/* Controller Mode Selector */}
         <div className="flex items-center gap-2 bg-[#FAF6EF] p-1 rounded border border-[#9A7447]/40">
           <button
-            onClick={() => setControllerMode('manual')}
+            onClick={() => {
+              soundFx.playRatchetClick();
+              setControllerMode('manual');
+            }}
             className={`px-3 py-1.5 rounded text-xs font-serif tracking-wider uppercase transition-all ${
               controllerMode === 'manual'
                 ? 'bg-[#9A7447] text-white font-bold shadow-sm'
@@ -414,7 +496,10 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
           </button>
 
           <button
-            onClick={() => setControllerMode('baseline')}
+            onClick={() => {
+              soundFx.playRatchetClick();
+              setControllerMode('baseline');
+            }}
             className={`px-3 py-1.5 rounded text-xs font-serif tracking-wider uppercase transition-all ${
               controllerMode === 'baseline'
                 ? 'bg-[#9A7447] text-white font-bold shadow-sm'
@@ -422,11 +507,14 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
             }`}
           >
             <Gauge size={13} className="inline mr-1" />
-            Rule-Based Baseline
+            Rule Baseline
           </button>
 
           <button
-            onClick={() => setControllerMode('rl')}
+            onClick={() => {
+              soundFx.playRatchetClick();
+              setControllerMode('rl');
+            }}
             className={`px-3 py-1.5 rounded text-xs font-serif tracking-wider uppercase transition-all ${
               controllerMode === 'rl'
                 ? 'bg-[#4B7B6B] text-white font-bold shadow-sm'
@@ -434,12 +522,12 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
             }`}
           >
             <Cpu size={13} className="inline mr-1" />
-            RL Neural Policy (PPO)
+            PPO Neural Policy
           </button>
         </div>
       </div>
 
-      {/* Error Alert if any */}
+      {/* Error Alert */}
       {errorMessage && (
         <div className="p-3 rounded bg-[#A94330]/15 border border-[#A94330]/40 text-[#8C2F20] text-xs flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -452,34 +540,71 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
         </div>
       )}
 
-      {/* Main 2-Column Laboratory Grid */}
+      {/* Main 2-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* Left Column: 3D WebGL Viewport & 2D Profile (7 cols) */}
+        {/* Left Column: 3D Viewport & 2D Profile (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           
-          {/* 3D Interactive Viewport */}
-          <div className="w-full h-[460px] rounded border border-[#9A7447]/40 shadow-md overflow-hidden bg-[#f4eee1]">
+          {/* 3D Interactive Viewport with HUD */}
+          <div className="w-full h-[470px] rounded border border-[#9A7447]/40 shadow-md overflow-hidden bg-[#f4eee1]">
             <Ornithopter3D
               x={state.x}
               y={state.y}
               pitch={state.theta}
               wingStroke={telemetry.wing_stroke_angle}
               trajectory={trajectory}
+              comparisonTrajectory={showComparisonOverlay ? comparisonTrajectory : []}
               status={state.status}
+              windX={windX}
             />
           </div>
 
+          {/* Modern Flight Timeline Scrubber (when trajectory exists) */}
+          {playbackTrajectoryRef.current.length > 0 && (
+            <div className="p-3 rounded bg-[#FAF6EF] border border-[#9A7447]/30 flex items-center gap-3 font-mono text-xs shadow-inner">
+              <span className="text-[#9A7447] font-serif font-bold uppercase tracking-wider text-[11px]">
+                Timeline Scrubber:
+              </span>
+              <input
+                type="range"
+                min={0}
+                max={Math.max(0, playbackTrajectoryRef.current.length - 1)}
+                value={scrubberIndex}
+                onChange={(e) => handleScrubberChange(parseInt(e.target.value))}
+                className="flex-1"
+              />
+              <span className="font-bold text-[#171714] min-w-[55px] text-right">
+                {state.time.toFixed(1)}s
+              </span>
+            </div>
+          )}
+
           {/* 2D Trajectory Profile & Terrain Canvas */}
-          <div className="parchment-card p-4 corner-ticks border border-[#9A7447]/40 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
+          <div className="parchment-card p-4 corner-ticks border border-[#9A7447]/40 shadow-sm space-y-2">
+            <div className="flex items-center justify-between">
               <span className="font-serif text-xs font-bold uppercase tracking-wider text-[#171714]">
                 Trajectory Profile & Valley Landing Zone
               </span>
-              <span className="font-mono text-[11px] text-[#5E5D57]">
-                Target: X=200m | Elevation: 25m → 0m
-              </span>
+
+              {/* Overlay Toggle */}
+              <button
+                onClick={() => {
+                  soundFx.playRatchetClick();
+                  setShowComparisonOverlay(!showComparisonOverlay);
+                }}
+                className={`text-[11px] font-mono px-2 py-0.5 rounded border transition-colors flex items-center gap-1 ${
+                  showComparisonOverlay
+                    ? 'bg-[#9A7447] text-white border-[#785630]'
+                    : 'bg-[#FAF6EF] text-[#5E5D57] border-[#9A7447]/30 hover:bg-[#E8DDC3]'
+                }`}
+                title="Overlay baseline glide vs learned policy"
+              >
+                <Layers size={12} />
+                <span>Overlay Baseline Comparison</span>
+              </button>
             </div>
+
             <canvas
               ref={canvasRef}
               width={640}
@@ -508,7 +633,7 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
               <button
                 onClick={handleLaunchFullFlight}
                 disabled={isLoading}
-                className="btn-renaissance btn-renaissance-primary py-2.5 text-xs col-span-2"
+                className="btn-renaissance btn-renaissance-primary py-2.5 text-xs col-span-2 shadow-md"
               >
                 <Play size={14} />
                 <span>{isLoading ? 'Computing Aerodynamics...' : 'Launch Full Flight Test'}</span>
@@ -551,7 +676,11 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
                 max="4.0"
                 step="0.5"
                 value={windX}
-                onChange={(e) => setWindX(parseFloat(e.target.value))}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  setWindX(val);
+                  soundFx.playWindSwoosh(val);
+                }}
                 className="w-full"
               />
 
@@ -572,7 +701,7 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
               />
             </div>
 
-            {/* Manual Sliders (only visible in Manual Mode) */}
+            {/* Manual Sliders */}
             {controllerMode === 'manual' && (
               <div className="pt-2 border-t border-[#9A7447]/20 space-y-3 bg-[#FAF6EF] p-3 rounded border">
                 <div className="font-serif text-xs font-bold text-[#9A7447] uppercase tracking-wider">
@@ -629,10 +758,13 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
               </div>
             )}
 
-            {/* AI Training & Benchmark Action Row */}
+            {/* Training & Benchmark Button Row */}
             <div className="pt-2 border-t border-[#9A7447]/20 flex items-center gap-2">
               <button
-                onClick={() => setIsTrainingModalOpen(true)}
+                onClick={() => {
+                  soundFx.playRatchetClick();
+                  setIsTrainingModalOpen(true);
+                }}
                 className="btn-renaissance flex-1 text-xs py-2"
               >
                 <Cpu size={14} className="text-[#9A7447]" />
@@ -640,7 +772,10 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
               </button>
 
               <button
-                onClick={() => setIsEvalModalOpen(true)}
+                onClick={() => {
+                  soundFx.playRatchetClick();
+                  setIsEvalModalOpen(true);
+                }}
                 className="btn-renaissance btn-renaissance-outline flex-1 text-xs py-2"
               >
                 <BarChart3 size={14} className="text-[#4B7B6B]" />
@@ -694,7 +829,7 @@ export const FlightLabPage: React.FC<FlightLabPageProps> = ({ isBackendHealthy: 
             </div>
           </div>
 
-          {/* Chronological Event Log */}
+          {/* Event Log */}
           <div className="parchment-card p-4 corner-ticks border border-[#9A7447]/40 shadow-sm space-y-2">
             <span className="font-serif text-xs font-bold uppercase tracking-wider text-[#171714] block">
               Simulation Event Log
