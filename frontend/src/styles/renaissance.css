@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --ink-primary: #171714;
+  --ink-secondary: #34332E;
+  --ink-muted: #5E5D57;
+  --parchment-base: #F7F2E8;
+  --parchment-card: #EFE6D2;
+  --parchment-dark: #E2D5BA;
+  --bronze-accent: #9A7447;
+  --bronze-light: #B89264;
+  --bronze-dark: #785630;
+  --vermilion: #A94330;
+  --blueprint: #3A5A78;
+  --verdigris: #4B7B6B;
+  --gold-highlight: #D4AF37;
+
+  --font-serif: 'Cinzel', 'EB Garamond', Georgia, serif;
+  --font-body: 'EB Garamond', Garamond, Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  --border-parchment: 1px solid rgba(154, 116, 71, 0.28);
+  --border-ink: 1px solid rgba(23, 23, 20, 0.22);
+  --shadow-warm: 0 4px 20px rgba(23, 23, 20, 0.08);
+  --shadow-elevation: 0 10px 30px rgba(23, 23, 20, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--parchment-base);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  line-height: 1.5;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(232, 221, 195, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(154, 116, 71, 0.1) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Typography Utility Classes */
+.font-serif { font-family: var(--font-serif); }
+.font-body { font-family: var(--font-body); }
+.font-sans { font-family: var(--font-sans); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Blueprint grid overlay */
+.blueprint-grid {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(58, 90, 120, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(58, 90, 120, 0.08) 1px, transparent 1px);
+}
+
+.blueprint-grid-dark {
+  background-size: 24px 24px;
+  background-color: #171d22;
+  background-image: 
+    linear-gradient(to right, rgba(100, 150, 190, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 150, 190, 0.12) 1px, transparent 1px);
+}
+
+/* Cards & Surfaces */
+.parchment-card {
+  background-color: var(--parchment-card);
+  border: var(--border-parchment);
+  border-radius: 4px;
+  box-shadow: var(--shadow-warm);
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.parchment-card:hover {
+  box-shadow: var(--shadow-elevation);
+}
+
+/* Editorial corner bracket marks */
+.corner-ticks {
+  position: relative;
+}
+.corner-ticks::before, .corner-ticks::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+.corner-ticks::before {
+  top: 4px;
+  left: 4px;
+  border-top: 2px solid var(--bronze-accent);
+  border-left: 2px solid var(--bronze-accent);
+}
+.corner-ticks::after {
+  bottom: 4px;
+  right: 4px;
+  border-bottom: 2px solid var(--bronze-accent);
+  border-right: 2px solid var(--bronze-accent);
+}
+
+/* Renaissance Buttons */
+.btn-renaissance {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.4rem;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  border: 1px solid var(--bronze-accent);
+  background: linear-gradient(180deg, #F9F4EB 0%, #E9DFC7 100%);
+  color: var(--ink-primary);
+  font-weight: 700;
+  box-shadow: 0 2px 5px rgba(23, 23, 20, 0.1);
+}
+
+.btn-renaissance:hover {
+  background: linear-gradient(180deg, #FFFDF8 0%, #F0E6D0 100%);
+  border-color: var(--bronze-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(154, 116, 71, 0.2);
+}
+
+.btn-renaissance-primary {
+  background: linear-gradient(180deg, #9A7447 0%, #785630 100%);
+  color: #FFFDF8;
+  border-color: #5E4120;
+}
+
+.btn-renaissance-primary:hover {
+  background: linear-gradient(180deg, #A88253 0%, #856138 100%);
+  color: #FFFFFF;
+}
+
+.btn-renaissance-outline {
+  background: transparent;
+  color: var(--ink-primary);
+  border: 1px solid rgba(23, 23, 20, 0.3);
+}
+
+.btn-renaissance-outline:hover {
+  background: rgba(232, 221, 195, 0.3);
+  border-color: var(--ink-primary);
+}
+
+.btn-renaissance-vermilion {
+  background: linear-gradient(180deg, #A94330 0%, #872E1E 100%);
+  color: #FFF;
+  border-color: #6B2215;
+}
+
+.btn-renaissance-vermilion:hover {
+  background: linear-gradient(180deg, #BD4F3A 0%, #943422 100%);
+}
+
+/* Badges */
+.badge-renaissance {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge-success {
+  background-color: rgba(75, 123, 107, 0.15);
+  color: #2D584A;
+  border: 1px solid rgba(75, 123, 107, 0.4);
+}
+
+.badge-warning {
+  background-color: rgba(154, 116, 71, 0.15);
+  color: #785630;
+  border: 1px solid rgba(154, 116, 71, 0.4);
+}
+
+.badge-danger {
+  background-color: rgba(169, 67, 48, 0.15);
+  color: #8C2F20;
+  border: 1px solid rgba(169, 67, 48, 0.4);
+}
+
+.badge-neutral {
+  background-color: rgba(94, 93, 87, 0.12);
+  color: var(--ink-secondary);
+  border: 1px solid rgba(94, 93, 87, 0.25);
+}
+
+/* Slider Controls */
+input[type="range"] {
+  accent-color: var(--bronze-accent);
+  cursor: pointer;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--parchment-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bronze-light);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bronze-dark);
+}

@@ -1,13 +1,9 @@
 {
-  "status": "training",
-  "current": {
-    "timesteps": 8000,
-    "total_timesteps": 30000,
-    "progress": 0.2667,
-    "elapsed_seconds": 36.9,
-    "fps": 216,
-    "mean_reward": -656.27
-  },
+  "status": "completed",
+  "save_path": "models/ornithopter_ppo.zip",
+  "completed_at": "2026-10-16T06:14:01Z",
+  "total_timesteps": 30000,
+  "final_mean_reward": 2625.8130806,
   "history": [
     {
       "timesteps": 1000,
@@ -72,6 +68,182 @@
       "elapsed_seconds": 36.9,
       "fps": 216,
       "mean_reward": -656.27
+    },
+    {
+      "timesteps": 9000,
+      "total_timesteps": 30000,
+      "progress": 0.3,
+      "elapsed_seconds": 40.75,
+      "fps": 220,
+      "mean_reward": -569.96
+    },
+    {
+      "timesteps": 10000,
+      "total_timesteps": 30000,
+      "progress": 0.3333,
+      "elapsed_seconds": 42.17,
+      "fps": 237,
+      "mean_reward": -407.03
+    },
+    {
+      "timesteps": 11000,
+      "total_timesteps": 30000,
+      "progress": 0.3667,
+      "elapsed_seconds": 45.97,
+      "fps": 239,
+      "mean_reward": -388.15
+    },
+    {
+      "timesteps": 12000,
+      "total_timesteps": 30000,
+      "progress": 0.4,
+      "elapsed_seconds": 47.43,
+      "fps": 252,
+      "mean_reward": -264.17
+    },
+    {
+      "timesteps": 13000,
+      "total_timesteps": 30000,
+      "progress": 0.4333,
+      "elapsed_seconds": 57.11,
+      "fps": 227,
+      "mean_reward": -192.38
+    },
+    {
+      "timesteps": 14000,
+      "total_timesteps": 30000,
+      "progress": 0.4667,
+      "elapsed_seconds": 58.51,
+      "fps": 239,
+      "mean_reward": -92.76
+    },
+    {
+      "timesteps": 15000,
+      "total_timesteps": 30000,
+      "progress": 0.5,
+      "elapsed_seconds": 62.12,
+      "fps": 241,
+      "mean_reward": 58.32
+    },
+    {
+      "timesteps": 16000,
+      "total_timesteps": 30000,
+      "progress": 0.5333,
+      "elapsed_seconds": 63.4,
+      "fps": 252,
+      "mean_reward": 199.31
+    },
+    {
+      "timesteps": 17000,
+      "total_timesteps": 30000,
+      "progress": 0.5667,
+      "elapsed_seconds": 69.8,
+      "fps": 243,
+      "mean_reward": 325.66
+    },
+    {
+      "timesteps": 18000,
+      "total_timesteps": 30000,
+      "progress": 0.6,
+      "elapsed_seconds": 72.71,
+      "fps": 247,
+      "mean_reward": 682.08
+    },
+    {
+      "timesteps": 19000,
+      "total_timesteps": 30000,
+      "progress": 0.6333,
+      "elapsed_seconds": 79.4,
+      "fps": 239,
+      "mean_reward": 760.14
+    },
+    {
+      "timesteps": 20000,
+      "total_timesteps": 30000,
+      "progress": 0.6667,
+      "elapsed_seconds": 82.4,
+      "fps": 242,
+      "mean_reward": 930.73
+    },
+    {
+      "timesteps": 21000,
+      "total_timesteps": 30000,
+      "progress": 0.7,
+      "elapsed_seconds": 89.78,
+      "fps": 233,
+      "mean_reward": 1125.35
+    },
+    {
+      "timesteps": 22000,
+      "total_timesteps": 30000,
+      "progress": 0.7333,
+      "elapsed_seconds": 93.39,
+      "fps": 235,
+      "mean_reward": 1256.21
+    },
+    {
+      "timesteps": 23000,
+      "total_timesteps": 30000,
+      "progress": 0.7667,
+      "elapsed_seconds": 100.69,
+      "fps": 228,
+      "mean_reward": 1498.47
+    },
+    {
+      "timesteps": 24000,
+      "total_timesteps": 30000,
+      "progress": 0.8,
+      "elapsed_seconds": 104.21,
+      "fps": 230,
+      "mean_reward": 1650.55
+    },
+    {
+      "timesteps": 25000,
+      "total_timesteps": 30000,
+      "progress": 0.8333,
+      "elapsed_seconds": 111.29,
+      "fps": 224,
+      "mean_reward": 1782.82
+    },
+    {
+      "timesteps": 26000,
+      "total_timesteps": 30000,
+      "progress": 0.8667,
+      "elapsed_seconds": 114.47,
+      "fps": 227,
+      "mean_reward": 1874.63
+    },
+    {
+      "timesteps": 27000,
+      "total_timesteps": 30000,
+      "progress": 0.9,
+      "elapsed_seconds": 121.56,
+      "fps": 222,
+      "mean_reward": 2221.67
+    },
+    {
+      "timesteps": 28000,
+      "total_timesteps": 30000,
+      "progress": 0.9333,
+      "elapsed_seconds": 124.75,
+      "fps": 224,
+      "mean_reward": 2402.36
+    },
+    {
+      "timesteps": 29000,
+      "total_timesteps": 30000,
+      "progress": 0.9667,
+      "elapsed_seconds": 131.27,
+      "fps": 220,
+      "mean_reward": 2556.92
+    },
+    {
+      "timesteps": 30000,
+      "total_timesteps": 30000,
+      "progress": 1.0,
+      "elapsed_seconds": 134.38,
+      "fps": 223,
+      "mean_reward": 2625.81
     }
   ]
 }
