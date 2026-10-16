@@ -1,5 +1,6 @@
-import React from 'react';
-import { Compass, Wind, ArrowRight, BookOpen, Layers, Cpu, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Compass, Wind, ArrowRight, BookOpen, Layers, Cpu, ShieldCheck, Box, Eye } from 'lucide-react';
+import { Ornithopter3D } from '../components/Ornithopter3D';
 
 interface DiscoverPageProps {
   onEnterLab: () => void;
@@ -7,6 +8,23 @@ interface DiscoverPageProps {
 }
 
 export const DiscoverPage: React.FC<DiscoverPageProps> = ({ onEnterLab, onExploreArchive }) => {
+  const [heroViewMode, setHeroViewMode] = useState<'3d' | 'blueprint'>('3d');
+  const [previewFlap, setPreviewFlap] = useState<number>(0.0);
+
+  // Gentle idle wing flapping for live 3D showcase
+  useEffect(() => {
+    if (heroViewMode !== '3d') return;
+    let frameId: number;
+    const startTime = Date.now();
+    const loop = () => {
+      const elapsed = (Date.now() - startTime) / 1000;
+      setPreviewFlap(Math.sin(elapsed * 2.8) * 0.38);
+      frameId = requestAnimationFrame(loop);
+    };
+    frameId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(frameId);
+  }, [heroViewMode]);
+
   return (
     <div className="space-y-16 pb-20">
       
@@ -15,7 +33,7 @@ export const DiscoverPage: React.FC<DiscoverPageProps> = ({ onEnterLab, onExplor
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-10 lg:p-12">
           
           {/* Left Text Column */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#E8DDC3] border border-[#9A7447]/40 font-serif text-xs font-bold tracking-widest text-[#785630] uppercase">
               <Compass size={14} />
               Codice sul volo degli uccelli • Folio 8v
@@ -38,9 +56,10 @@ export const DiscoverPage: React.FC<DiscoverPageProps> = ({ onEnterLab, onExplor
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <button
                 onClick={onEnterLab}
-                className="btn-renaissance btn-renaissance-primary text-sm px-6 py-3"
+                className="btn-renaissance btn-renaissance-primary text-sm px-6 py-3 flex items-center gap-2 shadow-md"
               >
-                <span>Enter Flight Laboratory</span>
+                <Box size={18} />
+                <span>Enter 3D Flight Laboratory</span>
                 <ArrowRight size={16} />
               </button>
 
@@ -54,17 +73,79 @@ export const DiscoverPage: React.FC<DiscoverPageProps> = ({ onEnterLab, onExplor
             </div>
           </div>
 
-          {/* Right Hero Image Column */}
-          <div className="lg:col-span-5 relative group">
-            <div className="parchment-card p-2 corner-ticks overflow-hidden border border-[#9A7447]/50 shadow-lg">
-              <img
-                src="/assets/hero/ornithopter_blueprint.jpg"
-                alt="Leonardo da Vinci Ornithopter Blueprint"
-                className="w-full h-auto object-cover rounded shadow-inner filter contrast-[1.03] transition-transform duration-700 group-hover:scale-[1.02]"
-              />
-              <div className="mt-2 text-center font-mono text-[11px] text-[#5E5D57]">
-                Fig. 1 — Reconstructio Schematis: Volatilio Meccanica (c. 1505)
+          {/* Right Hero Column: Interactive 3D Model & Manuscript Blueprint */}
+          <div className="lg:col-span-6 space-y-3">
+            {/* View Mode Switcher */}
+            <div className="flex items-center justify-between">
+              <div className="inline-flex items-center gap-1 bg-[#E8DDC3] p-1 rounded border border-[#9A7447]/40 text-xs font-serif shadow-inner">
+                <button
+                  onClick={() => setHeroViewMode('3d')}
+                  className={`px-3 py-1 rounded flex items-center gap-1.5 transition-all ${
+                    heroViewMode === '3d'
+                      ? 'bg-[#9A7447] text-white font-bold shadow-sm'
+                      : 'text-[#34332E] hover:text-[#171714]'
+                  }`}
+                >
+                  <Box size={14} />
+                  <span>3D Interactive Model</span>
+                </button>
+                <button
+                  onClick={() => setHeroViewMode('blueprint')}
+                  className={`px-3 py-1 rounded flex items-center gap-1.5 transition-all ${
+                    heroViewMode === 'blueprint'
+                      ? 'bg-[#9A7447] text-white font-bold shadow-sm'
+                      : 'text-[#34332E] hover:text-[#171714]'
+                  }`}
+                >
+                  <Eye size={14} />
+                  <span>Codex Blueprint</span>
+                </button>
               </div>
+
+              {heroViewMode === '3d' && (
+                <span className="font-mono text-[11px] text-[#785630] font-semibold bg-[#E8DDC3]/60 px-2 py-0.5 rounded border border-[#9A7447]/30">
+                  Drag: Orbit • Scroll: Zoom
+                </span>
+              )}
+            </div>
+
+            {/* Display Container */}
+            <div className="parchment-card p-2 corner-ticks overflow-hidden border border-[#9A7447]/50 shadow-lg">
+              {heroViewMode === '3d' ? (
+                <div className="w-full h-[380px] rounded overflow-hidden border border-[#9A7447]/30 bg-[#f4eee1] relative">
+                  <Ornithopter3D
+                    x={0}
+                    y={25}
+                    pitch={0.04}
+                    wingStroke={previewFlap}
+                    status="on_platform"
+                    windX={0}
+                  />
+                  <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between pointer-events-none">
+                    <span className="bg-[#FAF6EF]/90 backdrop-blur-sm px-2.5 py-1 rounded font-mono text-[10px] text-[#171714] border border-[#9A7447]/30 shadow-sm">
+                      3D Kinematic Rig • Dual-Joint Wings & Linen
+                    </span>
+                    <button
+                      onClick={onEnterLab}
+                      className="pointer-events-auto bg-[#9A7447] text-white text-[11px] font-serif font-bold px-3 py-1 rounded shadow hover:bg-[#785630] transition-colors flex items-center gap-1"
+                    >
+                      <span>Full 3D Flight Lab</span>
+                      <ArrowRight size={12} />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <img
+                    src="/assets/hero/ornithopter_blueprint.jpg"
+                    alt="Leonardo da Vinci Ornithopter Blueprint"
+                    className="w-full h-[380px] object-cover rounded shadow-inner filter contrast-[1.03]"
+                  />
+                  <div className="mt-2 text-center font-mono text-[11px] text-[#5E5D57]">
+                    Fig. 1 — Reconstructio Schematis: Volatilio Meccanica (c. 1505)
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

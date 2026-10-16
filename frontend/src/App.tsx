@@ -17,8 +17,7 @@ export function App() {
   useEffect(() => {
     checkHealth();
     loadMachines();
-
-    const healthInterval = setInterval(checkHealth, 5000);
+    const healthInterval = setInterval(checkHealth, 6000);
     return () => clearInterval(healthInterval);
   }, []);
 
@@ -42,13 +41,8 @@ export function App() {
     }
   };
 
-  const handleSelectMachineForLab = () => {
-    setActiveTab('lab');
-  };
-
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F2E8] text-[#171714]">
-      {/* Top Renaissance Navigation Bar */}
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
       <Navigation
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -56,50 +50,34 @@ export function App() {
         policyLoaded={policyLoaded}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <main className="flex-1 w-full">
         {activeTab === 'discover' && (
           <DiscoverPage
             onEnterLab={() => setActiveTab('lab')}
             onExploreArchive={() => setActiveTab('archive')}
           />
         )}
-
         {activeTab === 'archive' && (
           <ArchivePage
             machines={machines}
-            onSelectMachineForLab={handleSelectMachineForLab}
+            onSelectMachineForLab={() => setActiveTab('lab')}
           />
         )}
-
         {activeTab === 'sketch' && (
-          <SketchExplorerPage
-            onGoToFlightLab={() => setActiveTab('lab')}
-          />
+          <SketchExplorerPage onGoToFlightLab={() => setActiveTab('lab')} />
         )}
-
         {activeTab === 'lab' && (
-          <FlightLabPage
-            isBackendHealthy={isBackendHealthy}
-            policyLoaded={policyLoaded}
-          />
+          <FlightLabPage isBackendHealthy={isBackendHealthy} policyLoaded={policyLoaded} />
         )}
       </main>
 
-      {/* Editorial Renaissance Footer */}
-      <footer className="border-t border-[#9A7447]/30 bg-[#EFE6D2]/60 py-8 mt-16 font-serif text-xs text-[#5E5D57]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-center md:text-left space-y-1">
-            <span className="font-bold text-[#171714] tracking-wider block">
-              DA VINCI'S DREAM • IL SOGNO DI LEONARDO
-            </span>
-            <span className="italic">
-              An AI-Powered Renaissance Invention Laboratory • c. 1505 – 2026
-            </span>
+      <footer style={{ borderTop: '1px solid rgba(212,168,48,0.15)', background: 'var(--bg-elevated)', padding: '1.5rem 2rem' }}>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.75rem', letterSpacing: '0.2em', color: 'var(--gold-400)', textTransform: 'uppercase' }}>
+            DA VINCI'S DREAM &bull; Il Sogno di Leonardo &bull; c.&nbsp;1505&nbsp;–&nbsp;2026
           </div>
-
-          <div className="text-center md:text-right font-mono text-[11px] text-[#785630]">
-            <span>FastAPI • PyTorch CUDA • Stable-Baselines3 • Three.js WebGL</span>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-faint)', letterSpacing: '0.06em' }}>
+            FastAPI &bull; PyTorch CUDA &bull; Stable-Baselines3 PPO &bull; Three.js WebGL &bull; React 18
           </div>
         </div>
       </footer>
