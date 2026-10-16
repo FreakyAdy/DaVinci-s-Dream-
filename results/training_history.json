@@ -1,0 +1,77 @@
+{
+  "status": "training",
+  "current": {
+    "timesteps": 8000,
+    "total_timesteps": 30000,
+    "progress": 0.2667,
+    "elapsed_seconds": 36.9,
+    "fps": 216,
+    "mean_reward": -656.27
+  },
+  "history": [
+    {
+      "timesteps": 1000,
+      "total_timesteps": 30000,
+      "progress": 0.0333,
+      "elapsed_seconds": 3.47,
+      "fps": 288,
+      "mean_reward": 385.17
+    },
+    {
+      "timesteps": 2000,
+      "total_timesteps": 30000,
+      "progress": 0.0667,
+      "elapsed_seconds": 6.32,
+      "fps": 316,
+      "mean_reward": -1959.89
+    },
+    {
+      "timesteps": 3000,
+      "total_timesteps": 30000,
+      "progress": 0.1,
+      "elapsed_seconds": 13.72,
+      "fps": 218,
+      "mean_reward": -1091.78
+    },
+    {
+      "timesteps": 4000,
+      "total_timesteps": 30000,
+      "progress": 0.1333,
+      "elapsed_seconds": 16.69,
+      "fps": 239,
+      "mean_reward": -841.91
+    },
+    {
+      "timesteps": 5000,
+      "total_timesteps": 30000,
+      "progress": 0.1667,
+      "elapsed_seconds": 23.58,
+      "fps": 212,
+      "mean_reward": -583.81
+    },
+    {
+      "timesteps": 6000,
+      "total_timesteps": 30000,
+      "progress": 0.2,
+      "elapsed_seconds": 27.12,
+      "fps": 221,
+      "mean_reward": -448.89
+    },
+    {
+      "timesteps": 7000,
+      "total_timesteps": 30000,
+      "progress": 0.2333,
+      "elapsed_seconds": 34.27,
+      "fps": 204,
+      "mean_reward": -448.89
+    },
+    {
+      "timesteps": 8000,
+      "total_timesteps": 30000,
+      "progress": 0.2667,
+      "elapsed_seconds": 36.9,
+      "fps": 216,
+      "mean_reward": -656.27
+    }
+  ]
+}
